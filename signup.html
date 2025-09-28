@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="images/favicon.ico?v=2" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aston Fitness - Sign Up</title>
+    <style>
+        form {
+            width: 100%;
+            max-width: 450px;
+            margin: auto;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        label[for] {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        label:not([for]) {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 25px;
+        }
+
+        button[type="submit"] {
+            width: 104%;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header id="main-header">
+        <a href="index.html">
+            <h1>Aston Fitness</h1>
+        </a>
+    </header>
+
+    <h2>Sign Up</h2>
+    <h3>Create your account</h3>
+    <form name="signUpForm" onsubmit="return validateSignUpForm()" method="post">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+            title="Please enter a valid email address (e.g., name@example.com)">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+            title="Password must be at least 8 characters long and include: one lowercase, one uppercase, one number, and one special character (@$!%*?&)">
+
+        <label for="confirm-password">Confirm Password:</label>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password"
+            required>
+
+        <p id="password-error"></p>
+
+        <h3>Tell us about your goals</h3>
+        <label for="goal">Choose the goal that most closely matches your aims:</label>
+        <input type="text" id="goal" name="goal" list="goal-suggestions"
+            placeholder="e.g., Lose weight, build muscle..." required>
+        <datalist id="goal-suggestions">
+            <option value="Lose weight"></option>
+            <option value="Build muscle"></option>
+            <option value="Improve endurance"></option>
+            <option value="Increase mobility"></option>
+            <option value="Recover from injury"></option>
+        </datalist>
+
+        <label for="start-date">When can you get started?</label>
+        <input type="date" id="start-date" name="start-date" required>
+
+
+        <h3>Choose a plan</h3>
+        <label><input type="radio" id="basic" name="plan" value="25.99" required>Basic - $25.99 a month. Introductory PT
+            session, two classes a week.</label>
+        <label><input type="radio" id="premium" name="plan" value="31.99" required>Premium - $31.99 a month. All basic
+            benefits plus pool access and one monthly PT check-in session.</label>
+
+        <h3>Anything else?</h3>
+        <label><input type="checkbox" id="sauna" name="extras" value="3.99">Sauna Access (+$3.99/
+            month)</label>
+        <label><input type="checkbox" id="towel" name="extras" value="5.99">Towel Required (+$5.99/
+            month)</label>
+        <label><input type="checkbox" id="bag" name="extras" value="17.99">Stylish Tote bag (+$17.99)</label><br>
+
+        <label for="comment-box" style="font-size: 1.1em;"> If you have any further requirements, please leave a
+            comment:</label>
+        <textarea id="comment-box" name="comment-box" rows="4" placeholder="Type your comments here..."></textarea>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <script>
+        function validateSignUpForm() {
+            var password = document.forms["signUpForm"]["password"].value;
+            var confirmPassword = document.forms["signUpForm"]["confirm-password"].value;
+
+            var errorElement = document.getElementById('password-error');
+
+            if (password != confirmPassword) {
+                errorElement.textContent = "Your passwords do not match. Please try again.";
+                return false;
+            } else {
+                errorElement.textContent = "";
+            }
+
+            var planPrice = parseFloat(document.forms["signUpForm"]["plan"].value);
+            var totalMonthlyFee = planPrice;
+            var totalOneTimeFee = 0.00;
+
+            var extrasList = document.forms["signUpForm"]["extras"];
+
+            for (var i = 0; i < extrasList.length; i++) {
+                if (extrasList[i].checked) {
+                    var fee = parseFloat(extrasList[i].value);
+                    if (extrasList[i].id === 'bag') {
+                        totalOneTimeFee += fee;
+                    } else {
+                        totalMonthlyFee += fee;
+                    }
+                }
+            }
+
+            var email = document.forms["signUpForm"]["email"].value;
+            var goal = document.forms["signUpForm"]["goal"].value;
+            var startDate = document.forms["signUpForm"]["start-date"].value;
+            var comment = document.forms["signUpForm"]["comment-box"].value;
+            var monthlyFee = totalMonthlyFee.toFixed(2);
+            var oneTimeFee = totalOneTimeFee.toFixed(2);
+            var oneTimeParam = "";
+
+            if (parseFloat(oneTimeFee) > 0) {
+                oneTimeParam = '&onetime=' + oneTimeFee
+            }
+
+            var redirectUrl = "signupconfirmation.html" +
+                '?email=' + encodeURIComponent(email) +
+                '&goal=' + encodeURIComponent(goal) +
+                '&startdate=' + encodeURIComponent(startDate) +
+                '&monthly=' + monthlyFee +
+                oneTimeParam +
+                '&comments=' + encodeURIComponent(comment);
+
+            window.location.href = redirectUrl;
+
+            return false;
+        }
+    </script>
+
+</body>
+
+</html>

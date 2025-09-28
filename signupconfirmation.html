@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="images/favicon.ico?v=2" type="image/x-icon"/> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aston Fitness - Sign-up Confirmation</title>
+</head>
+
+<body>
+
+    <header id="main-header">
+        <h1>Aston Fitness</h1>
+    </header>
+
+    <h2>Check your details are correct:</h2>
+    <p id="email-output">Email: </p>
+    <p id="goal-output">Goal: </p>
+    <p id="start-output">Start Date: </p>
+    <p id="monthly-output">Monthly total: </p>
+    <p id="onetime-output"></p>
+    <p id="comments-output"></p>
+
+    <script>
+        function getUrlParameter(name) {
+            var urlParameter = new URLSearchParams(window.location.search);
+            return urlParameter.get(name);
+        }
+
+        window.onload = function () {
+            var email = getUrlParameter('email');
+            var goal = getUrlParameter('goal');
+            var startDate = getUrlParameter('startdate');
+            var comments = getUrlParameter('comments');
+            var monthlyFee = getUrlParameter('monthly');
+            var oneTimeFee = getUrlParameter('onetime');
+
+            if (email) {
+                document.getElementById('email-output').innerHTML = 'Email: <strong>' + decodeURIComponent(email) + '</strong>';
+            }
+
+            if (goal) {
+                document.getElementById('goal-output').innerHTML = 'Goal: <strong>' + decodeURIComponent(goal) + '</strong>';
+            }
+
+            if (startDate) {
+                document.getElementById('start-output').innerHTML = 'Start Date: <strong>' + decodeURIComponent(startDate) + '</strong>';
+            }
+
+            if (comments) {
+                document.getElementById('comments-output').innerHTML = 'Comments: <strong>' + decodeURIComponent(comments) + '</strong>';
+            }
+
+            if (monthlyFee) {
+                document.getElementById('monthly-output').innerHTML = 'Monthly Fee: $<strong>' + decodeURIComponent(monthlyFee) + '</strong>';
+            }
+
+            if (oneTimeFee) {
+                document.getElementById('onetime-output').innerHTML = 'One Time Fee: $<strong>' + decodeURIComponent(oneTimeFee) + '</strong>';
+            }
+        }
+    </script>
+</body>
+
+</html>
